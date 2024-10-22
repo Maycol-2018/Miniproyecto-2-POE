@@ -451,21 +451,29 @@
                 <RowConstraints maxHeight="25.5" minHeight="10.0" prefHeight="13.5" valignment="CENTER" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Button contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="52.0" prefWidth="77.0" style="-fx-background-color: #fff;" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER">
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                     <graphic>
-                        <ImageView fitHeight="56.0" fitWidth="56.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@images/help-icon.png" />
-                           </image>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">
+                     <children>
+                        <Button fx:id="hintButton" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#onHandleButtonHint" prefHeight="52.0" prefWidth="77.0" style="-fx-background-color: #fff;" textAlignment="CENTER">
                            <cursor>
                               <Cursor fx:constant="HAND" />
                            </cursor>
-                        </ImageView>
-                     </graphic>
-                  </Button>
+                           <graphic>
+                              <ImageView fitHeight="56.0" fitWidth="56.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@images/help-icon.png" />
+                                 </image>
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                        <Label fx:id="hintsLabel" alignment="CENTER" layoutX="47.0" layoutY="37.0" prefHeight="22.0" prefWidth="18.0" style="-fx-background-radius: 22; -fx-border-radius: 22; -fx-border-color: black; -fx-background-color: white; -fx-border-width: 1.5px;" textAlignment="CENTER" visible="false">
+                           <font>
+                              <Font name="Segoe UI Black" size="12.0" />
+                           </font></Label>
+                     </children>
+                  </AnchorPane>
                   <Label prefHeight="20.0" prefWidth="46.0" text="Limpiar" textFill="#109f7e" GridPane.halignment="CENTER" GridPane.rowIndex="1">
                      <GridPane.margin>
                         <Insets left="10.0" />
