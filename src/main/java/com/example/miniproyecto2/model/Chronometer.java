@@ -57,4 +57,9 @@ public class Chronometer implements IChronometer{
         timeline.stop();
     }
 
+    public void restart(){
+        minutes = 0;
+        seconds = 0;
+    }
+
 }
