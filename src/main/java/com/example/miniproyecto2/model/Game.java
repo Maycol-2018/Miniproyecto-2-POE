@@ -3,6 +3,7 @@ package com.example.miniproyecto2.model;
 import com.example.miniproyecto2.controller.GameController;
 import javafx.scene.Node;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Background;
 import javafx.scene.layout.GridPane;
 
 import java.util.ArrayList;
@@ -14,6 +15,9 @@ public class Game {
     private Random random = new Random();
     private GridPane gridPane;
     private GameController gameController;
+    private Background background;
+    private int lastSelectedRow = -1;
+    private int lastSelectedColumn = -1;
 
     public Game(GameController gameController) {
         this.gameController = new GameController();
@@ -23,20 +27,35 @@ public class Game {
 
 
 
-    public void fillTxtLabel(){
+    // Metodo que puede revelar toda la matriz, puede servir cuando el usuario haya perdido y se muestre la
+    // solución
+//    public void cleanMatriz(){
+//        int digit;
+//        matriz = Board.getMatriz();
+//        for (int row = 0; row < 6; row++) {
+//            for (int column = 0; column < 6; column++) {
+//                // Se obtiene el textfield del GridPane. Correspondiente a la fila y columna actual
+//                TextField txtField = (TextField) getNodeByRowColumnIndex(row, column, gridPane);
+//                digit = matriz.get(row).get(column);
+//                txtField.setText(digit + "");
+//            }
+//        }
+//    }
+
+    public void cleanMatriz(){
         int digit;
         matriz = Board.getMatriz();
         for (int row = 0; row < 6; row++) {
             for (int column = 0; column < 6; column++) {
                 // Se obtiene el textfield del GridPane. Correspondiente a la fila y columna actual
                 TextField txtField = (TextField) getNodeByRowColumnIndex(row, column, gridPane);
-                digit = matriz.get(row).get(column);
+                digit = 0;
                 txtField.setText(digit + "");
             }
         }
     }
 
-
+    // Llena cada bloque de la matriz con 2 numeros de forma aletatoria.
     public void fillblocks(){
         matriz = Board.getMatriz();
         // Iterar sobre los bloques de 2x3 en la matriz
@@ -70,6 +89,126 @@ public class Game {
         }
     }
 
+    // Metodo coloca un color de fondo a los labels, del bloque y de filas y columnas en donde se presiono.
+    public void paintSquares(int row, int column){
+        // Primero, limpia la celda previamente seleccionada
+        removePaintLastBox();
+        // Limpia el bloque de la celda previamente seleccionada
+        removePaintBlock();
+        // Limpia toda la matriz quitando los fondos
+        removePaintMatriz();
+
+        // Pinta filas
+        paintRows(row);
+        // Pinta columnas
+        paintColumns(column);
+        // Pinta bloque
+        paintBlock(row, column);
+        // Pinta casilla actual
+        paintCurrentBox(row, column);
+
+        // Actualiza la celda seleccionada: Para limpiar el fondo de la ultima celda seleccionada
+        lastSelectedRow = row;
+        lastSelectedColumn = column;
+    }
+
+    public void paintCurrentBox(int row, int column){
+        TextField txtField = (TextField) getNodeByRowColumnIndex(row,column, gridPane);
+        txtField.getStyleClass().add("currentBoxBackground");
+    }
+
+    public void paintRows(int row){
+        for(int i= 0; i<6; i++){
+            TextField txtField = (TextField) getNodeByRowColumnIndex(row, i, gridPane);
+            txtField.getStyleClass().add("squaresBackground");
+        }
+    }
+
+    public void paintColumns(int column){
+        for(int i= 0; i<6; i++){
+            TextField txtField = (TextField) getNodeByRowColumnIndex(i, column, gridPane);
+            txtField.getStyleClass().add("squaresBackground");
+        }
+    }
+
+    public void paintBlock(int row, int column){
+        // Obtiene el primer numero de la fila del bloque
+        int f = getRowBlock(row);
+        // Obtiene el primer numero de la columna de bloque
+        int c = getColumnBlock(column);
+
+        // Bucle que recorre los bloques 2x3 por filas y luego por columnas
+        for(int i=0; i<2; i++){
+            for(int j=0; j<3; j++){
+                TextField txtField = (TextField) getNodeByRowColumnIndex(f, c, gridPane);
+                txtField.getStyleClass().add("squaresBackground");
+                // Se recorre la columna
+                c++;
+            }
+            // Se reinicia al valor de la columna del bloque actual
+            c = getColumnBlock(column);
+            // Se continua con la siguiente fila.
+            f++;
+        }
+    }
+
+    public void removePaintMatriz(){
+        for(int i=0; i<6; i++){
+            for(int j=0; j<6; j++){
+                TextField txtField = (TextField) getNodeByRowColumnIndex(i, j, gridPane);
+                txtField.getStyleClass().remove("squaresBackground");
+            }
+        }
+    }
+
+    public void removePaintLastBox(){
+        // Primero, limpia la celda previamente seleccionada
+        if (lastSelectedRow != -1 && lastSelectedColumn != -1) {
+            TextField txtField = (TextField) getNodeByRowColumnIndex(lastSelectedRow, lastSelectedColumn, gridPane);
+            txtField.getStyleClass().remove("squaresBackground");
+            txtField.getStyleClass().remove("currentBoxBackground");
+        }
+    }
+
+    public void removePaintBlock(){
+        // Primero, limpia la celda previamente seleccionada
+        if (lastSelectedRow != -1 && lastSelectedColumn != -1) {
+            removePaintRows(lastSelectedRow);
+            removePaintColumns(lastSelectedColumn);
+        }
+    }
+
+    public void removePaintRows(int row){
+        for(int i= 0; i<6; i++){
+            TextField txtField = (TextField) getNodeByRowColumnIndex(row, i, gridPane);
+            txtField.getStyleClass().remove("squaresBackground");
+        }
+    }
+
+    public void removePaintColumns(int column){
+        for(int i= 0; i<6; i++){
+            TextField txtField = (TextField) getNodeByRowColumnIndex(i, column, gridPane);
+            txtField.getStyleClass().remove("squaresBackground");
+        }
+    }
+
+    // Retorna la fila del bloque, este numero varía segun cada bloque.
+    public int getRowBlock(int row){
+        if(row < 2) return 0;
+        else if(row < 4) return 2;
+        else return 4;
+    }
+
+    // Retorna la primera columna del bloque, este número varia según cada bloque
+    public int getColumnBlock(int column){
+        if(column < 3) return 0;
+        else return 3;
+    }
+
+    public void disableBoxes(){
+
+    }
+
     public Node getNodeByRowColumnIndex(final int row, final int column, GridPane gridPane) {
         for (Node node : gridPane.getChildren()) {
             if (GridPane.getRowIndex(node) != null && GridPane.getColumnIndex(node) != null &&
@@ -79,6 +218,8 @@ public class Game {
         }
         return null;
     }
+
+
 
 
 }
