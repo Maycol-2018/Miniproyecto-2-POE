@@ -3,14 +3,19 @@ package com.example.miniproyecto2.controller;
 import com.example.miniproyecto2.model.Board;
 import com.example.miniproyecto2.model.Chronometer;
 import com.example.miniproyecto2.model.Game;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert; // Libreria que muestra ventanas emergentes como alertas de información, confirmación, error o precaución
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TextFormatter;
+import javafx.geometry.Pos;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.util.Duration;
+
 
 public class GameController {
     private Chronometer chronometer;
@@ -25,6 +30,10 @@ public class GameController {
 
     @FXML
     private Label labelTime;
+    @FXML
+    private Label errorCountLabel; // Label para mostrar el contador de errores
+    private int errorCount = 0; // Contador de errores
+    private final int MAX_ERRORS = 6; // Máximo de errores permitidos
 
     @FXML
     private GridPane gridPane;
@@ -42,6 +51,10 @@ public class GameController {
         // Se proporciona al cronometro una referencia directa al objeto actual de la clase (GameController)
         // Así la clase cronometro puede acceder a los elementos de GameController.
         startGame();
+
+        // Inicializar el contador de errores
+        initializeErrorCounter();
+
         System.out.println("Game controller inicializado");
         hintsLabel.setVisible(false); // El label está oculto inicialmente
         hintButton.setDisable(false); // El botón está habilitado desde el inicio
@@ -60,6 +73,8 @@ public class GameController {
      public Label getLabelTime() {
         return labelTime;
     }
+
+    /* MANEJO DE EVENTOS Y VALIDACIONES */
 
     public void generateEvents(){
         // Recorrer todas las filas y columnas del GridPane 6x6
@@ -80,16 +95,27 @@ public class GameController {
                         System.out.println("TextField seleccionado en [" + finalRow + "," + finalColumn + "]");
                     });
 
-                    txtField.setTextFormatter(new TextFormatter<>(change -> {
-                        // Limitar la longitud a 2 caracteres
-                        if (change.getControlNewText().length() > 1) {
-                            change.setText(""); // No permite agregar más caracteres
+                    // Modificado el TextFormatter para validar solo cuando se ingresa un número 1 a 6
+                    txtField.textProperty().addListener((observable, oldValue, newValue) -> {
+                        if (!newValue.isEmpty()) {
+                            try {
+                                int number = Integer.parseInt(newValue);
+                                if (number >= 1 && number <= 6) {
+                                    validateMove(finalRow, finalColumn, number);
+                                }
+                            } catch (NumberFormatException e) {
+                                txtField.setText(oldValue);
+                            }
                         }
-                        // Validar que solo se ingresen números
-                        if (!change.getControlNewText().matches("[1-9]*")) {
-                            change.setText(""); // No permite caracteres que no sean números
-                        }
+                    });
 
+                    txtField.setTextFormatter(new TextFormatter<>(change -> {
+                        if (change.getControlNewText().length() > 1) {
+                            return null;
+                        }
+                        if (!change.getControlNewText().matches("[1-6]*")) {
+                            return null;
+                        }
                         return change;
                     }));
                 }
@@ -106,6 +132,7 @@ public class GameController {
         return gridPane;
     }
 
+    /* SISTEMA DE AYUDA/INSTRUCCIONES */
 
     @FXML
     void onHandleButtonHowToPlay(ActionEvent event) {
@@ -125,6 +152,8 @@ public class GameController {
         // Mostrar el cuadro de diálogo en pantalla y esperar a que el usuario la cierre antes de continuar
         showMessageHowToPlay.showAndWait();
     }
+
+    /* MANEJO DE PISTAS */
 
     private int availableHints = 6; // Iniciamos con 6 pistas disponibles
 
@@ -171,5 +200,151 @@ public class GameController {
             hintsLabel.setVisible(false);
             hintButton.setDisable(true);
         }
+    }
+
+    /* SISTEMA DE CONTADOR DE ERRORES */
+
+    // Metodo para inicializar el contador de errores
+    private void initializeErrorCounter() {
+        errorCountLabel.setText("0/" + MAX_ERRORS);
+    }
+
+    /* VALIDACIÓN DETALLADA DE MOVIMIENTOS PARA ERRORES */
+
+    private void validateMove(int row, int column, int number) {
+        boolean hasError = false;
+        TextField currentCell = (TextField) game.getNodeByRowColumnIndex(row, column, gridPane);
+
+        // Validar fila
+        for (int c = 0; c < 6; c++) {
+            if (c != column) {
+                TextField cellInRow = (TextField) game.getNodeByRowColumnIndex(row, c, gridPane);
+                if (cellInRow != null && !cellInRow.getText().isEmpty() &&
+                        Integer.parseInt(cellInRow.getText()) == number) {
+                    hasError = true;
+                    highlightError(cellInRow);  // Resalta la celda con conflicto
+                }
+            }
+        }
+
+        // Validar columna
+        for (int r = 0; r < 6; r++) {
+            if (r != row) {
+                TextField cellInColumn = (TextField) game.getNodeByRowColumnIndex(r, column, gridPane);
+                if (cellInColumn != null && !cellInColumn.getText().isEmpty() &&
+                        Integer.parseInt(cellInColumn.getText()) == number) {
+                    hasError = true;
+                    highlightError(cellInColumn);  // Resalta la celda con conflicto
+                }
+            }
+        }
+
+        // Validar bloque 2x3
+        int blockStartRow = (row / 2) * 2;
+        int blockStartCol = (column / 3) * 3;
+
+        for (int r = blockStartRow; r < blockStartRow + 2; r++) {
+            for (int c = blockStartCol; c < blockStartCol + 3; c++) {
+                if (r != row || c != column) {
+                    TextField cellInBlock = (TextField) game.getNodeByRowColumnIndex(r, c, gridPane);
+                    if (cellInBlock != null && !cellInBlock.getText().isEmpty() &&
+                            Integer.parseInt(cellInBlock.getText()) == number) {
+                        hasError = true;
+                        highlightError(cellInBlock);  // Resalta la celda con conflicto
+                    }
+                }
+            }
+        }
+
+        // Si hay error, incrementar contador y aplicar estilos
+        if (hasError) {
+            errorCount++;
+            if (errorCount <= MAX_ERRORS) {
+                errorCountLabel.setText(errorCount + "/" + MAX_ERRORS);
+                highlightError(currentCell);  // Resalta la celda actual
+
+                // Programar la eliminación del resaltado después de 2 segundos
+                Timeline timeline = new Timeline(new KeyFrame(
+                        Duration.seconds(2),
+                        evt -> clearHighlights()
+                ));
+                timeline.play();
+            }
+
+            if (errorCount >= MAX_ERRORS) {
+                showGameOverAlert();
+            }
+        }
+    }
+
+    // Metodo para resaltar una celda con error
+    private void highlightError(TextField cell) {
+        if (cell != null) {
+            // Combina el fondo suave con un borde rojo
+            cell.setStyle(
+                    "-fx-background-color: rgba(255, 102, 102, 0.8);" +  // Fondo rojo suave
+                            "-fx-border-color: #FF0000;"                        // Color del borde rojo
+            );
+        }
+    }
+    // Metodo para resaltar una celda con error usando coordenadas
+    private void highlightError(int row, int column) {
+        TextField cell = (TextField) game.getNodeByRowColumnIndex(row, column, gridPane);
+        highlightError(cell);
+    }
+
+    // Metodo para limpiar todos los resaltados
+    private void clearHighlights() {
+        for (int r = 0; r < 6; r++) {
+            for (int c = 0; c < 6; c++) {
+                TextField cell = (TextField) game.getNodeByRowColumnIndex(r, c, gridPane);
+                if (cell != null) {
+                    cell.setStyle("");
+                }
+            }
+        }
+    }
+
+    /* SISTEMA DE GAME OVER  */
+
+
+    private void showGameOverAlert() {
+        Alert gameOverAlert = new Alert(Alert.AlertType.ERROR);
+        gameOverAlert.setTitle("Game Over");
+
+        // Cargar la imagen de Game Over
+        ImageView imageView = new ImageView(new Image(getClass().getResourceAsStream("/com/example/miniproyecto2/images/gameover-image.png")));
+        // Ajustar el tamaño de la imagen si es necesario
+        imageView.setFitHeight(200);
+        imageView.setFitWidth(380);
+        imageView.setPreserveRatio(true);
+
+        // Crear label para el header con fuente Ravie y centrado
+        Label headerLabel = new Label("¡Has perdido!");
+        headerLabel.setFont(Font.font("Ravie", 20));
+        headerLabel.setAlignment(Pos.CENTER);
+        headerLabel.setMaxWidth(Double.MAX_VALUE); //Permite que el label ocupe todo el ancho disponible
+        headerLabel.setStyle("-fx-text-fill: #FF0000; -fx-font-weight: bold;");
+
+        Label contentLabel = new Label("Has alcanzado el máximo de errores permitidos (6). El juego ha terminado.");
+        contentLabel.setFont(Font.font("Impact", 14)); // Cambiar fuente a Impact
+        contentLabel.setWrapText(true); // Permitir que el texto se ajuste
+
+        // Crear un VBox para organizar los elementos verticalmente
+        VBox content = new VBox(10); // 10 es el espaciado entre elementos
+        content.setAlignment(Pos.CENTER);
+        content.getChildren().addAll(imageView, contentLabel);
+
+        // Establecer el contenido personalizado
+        gameOverAlert.getDialogPane().setHeader(headerLabel);
+        gameOverAlert.getDialogPane().setContent(content);
+
+        // Personalizar el estilo del DialogPane (opcional)
+        gameOverAlert.getDialogPane().setStyle("-fx-background-color: white;");
+
+        // Mostrar la ventana emergente
+        gameOverAlert.showAndWait();
+
+        // Opcional: Aquí se puede  agregar código para reiniciar el juego
     }
 }

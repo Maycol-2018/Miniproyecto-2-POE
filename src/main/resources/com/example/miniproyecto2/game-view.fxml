@@ -413,7 +413,7 @@
                      <font>
                         <Font size="15.0" />
                      </font></Label>
-                  <Label text="0/6" textFill="#777575" GridPane.columnIndex="1">
+                  <Label fx:id="errorCountLabel" text="0/6" textFill="#777575" GridPane.columnIndex="1">
                      <font>
                         <Font size="14.0" />
                      </font></Label>
