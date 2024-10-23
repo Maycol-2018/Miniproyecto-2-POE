@@ -28,6 +28,9 @@ public class GameController {
 
     @FXML
     private GridPane gridPane;
+    private TextField selectedTextField; // Variable para guardar el TextField seleccionado
+    private int selectedRow = -1; // Almacena la fila del TextField seleccionado
+    private int selectedColumn = -1; // Almacena la columna del TextField seleccionado
 
     public GameController() {}
 
@@ -69,8 +72,12 @@ public class GameController {
                     // Asignar un evento de clic a cada Label
                     int finalRow = row;
                     int finalColumn = column;
+                    // Agregar el evento de selección al TextField existente
                     txtField.setOnMouseClicked(event -> {
-                        System.out.println("Label at [" + finalRow + "," + finalColumn + "] clicked: " + txtField.getText());
+                        selectedTextField = txtField;
+                        selectedRow = finalRow;
+                        selectedColumn = finalColumn;
+                        System.out.println("TextField seleccionado en [" + finalRow + "," + finalColumn + "]");
                     });
 
                     txtField.setTextFormatter(new TextFormatter<>(change -> {
@@ -134,22 +141,23 @@ public class GameController {
     }
 
     private void showHint() {
-        availableHints--; // Reduce el número de pistas disponibles
-        System.out.println("MOSTRANDO PISTA. PISTAS RESTANTES: " + availableHints);
+        if (selectedTextField != null && selectedTextField.getText().isEmpty()) {
+            availableHints--;
 
-        // Genera y muestra la pista
-        String hint = "Esta es una pista para tu juego"; // Genera la pista aquí
+            // Obtener el valor correcto de la matriz
+            int hint = game.getMatrizValue(selectedRow, selectedColumn);
 
-        // Muestra la pista al jugador
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Pista");
-        alert.setHeaderText("Aquí tienes una pista");
-        alert.setContentText(hint);
-        alert.showAndWait();
-        // Actualiza contador de pistas
-        updateHintDisplay();
+            // Mostrar el valor en el TextField seleccionado
+            selectedTextField.setText(String.valueOf(hint));
 
-        // Aqui añadir cualquier lógica adicional del juego después de mostrar una pista
+            System.out.println("Pista revelada: " + hint);
+            updateHintDisplay();
+        } else {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Selección requerida");
+            alert.setHeaderText("Por favor, seleccione una celda vacía");
+            alert.showAndWait();
+        }
     }
 
     // Metodo que actualiza la visualización del contador de pistas

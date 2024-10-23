@@ -21,6 +21,11 @@ public class Game {
         gridPane = gameController.getGridPane();
     }
 
+    // Metodo para obtener el valor correcto de la matriz
+    public int getMatrizValue(int row, int col) {
+        return matriz.get(row).get(col);
+    }
+
 
 
     public void fillTxtLabel(){
