@@ -19,6 +19,12 @@ public class Game {
     private int lastSelectedRow = -1;
     private int lastSelectedColumn = -1;
 
+    // Variable para comprobar en el metodo editableBoxesTrue() si se ha editado una casilla antes.
+    private int lastEditableBoxes = -1;
+
+    // Matriz que almacenaran las posiciónes de las ultimas casillas por defecto, para que sean editables
+    private int boxesMatriz[][];
+
     public Game(GameController gameController) {
         this.gameController = new GameController();
         matriz = Board.getMatriz();
@@ -57,7 +63,10 @@ public class Game {
 
     // Llena cada bloque de la matriz con 2 numeros de forma aletatoria.
     public void fillblocks(){
+        int count=0;
+        editableBoxesTrue();
         matriz = Board.getMatriz();
+        boxesMatriz = new int[12][2];
         // Iterar sobre los bloques de 2x3 en la matriz
         for (int bloqueFila = 0; bloqueFila < 6; bloqueFila += 2) {
             for (int bloqueColumna = 0; bloqueColumna < 6; bloqueColumna += 3) {
@@ -85,6 +94,21 @@ public class Game {
                 TextField txtField2 = (TextField) getNodeByRowColumnIndex(pos21, pos22, gridPane);
                 int num2 = matriz.get(pos21).get(pos22);
                 txtField2.setText(num2 + "");
+
+                // Metodo que deshabilita la posibilidad de hacer modificaciones sobre las celdas por defecto
+                // de cada bloque
+                editableBoxesFalse(pos11, pos12, pos21, pos22);
+
+                // Ahora el metodo que habilita la posibilidad de modificar las celdas por defecto se puede usar
+                // por que ya es ejecuto su metodo que hace el procedimiento contrario.
+                lastEditableBoxes = 0;
+
+                boxesMatriz[count][0] = pos11;
+                boxesMatriz[count][1] = pos12;
+                count++;
+                boxesMatriz[count][0] = pos21;
+                boxesMatriz[count][1] = pos22;
+                count++;
             }
         }
     }
@@ -205,7 +229,49 @@ public class Game {
         else return 3;
     }
 
-    public void disableBoxes(){
+    // Metedo que desabilida la edición sobre las casillas por defecto
+    public void editableBoxesFalse(int row1, int column1, int row2, int column2){
+        TextField txtField = (TextField) getNodeByRowColumnIndex(row1, column1, gridPane);
+        txtField.setEditable(false);
+        TextField txtField2 = (TextField) getNodeByRowColumnIndex(row2, column2, gridPane);
+        txtField2.setEditable(false);
+    }
+
+    // Metodo que habilita la edición sobre las ultimas casillas por defecto, se va a usar cuando el usuario
+    // presione el boton de nuevo juego.
+    public void editableBoxesTrue(){
+        int count =0;
+        int f =0;
+        int c =0;
+//        if(lastEditableBoxes != -1){
+//            // Se recorren los 6 recuadros, y en cada uno sus 2 casillas se habilitan para ser editadas
+//            for(int i= 0; i<6; i++){
+//                f = boxesMatriz[count][0];
+//                c = boxesMatriz[count][1];
+//                TextField txtField = (TextField) getNodeByRowColumnIndex(f, c, gridPane);
+//                txtField.setEditable(true);
+//                count++;
+//            }
+//        }
+
+        if(lastEditableBoxes != -1) {
+            // Se recorren los 6 recuadros, y en cada uno sus 2 casillas se habilitan para ser editadas
+            for (int i = 0; i < 12; i++) {
+                f = boxesMatriz[count][0];
+                c = boxesMatriz[count][1];
+                TextField txtField = (TextField) getNodeByRowColumnIndex(f, c, gridPane);
+                txtField.setEditable(true);
+
+                //System.out.println( f + " " +c);
+                count++;
+            }
+        }
+//        for(int i=0; i<12; i++){
+//            for(int j=0; j<2; j++){
+//                System.out.print(boxesMatriz[i][j] + " ");
+//            }
+//            System.out.println();
+//        }
 
     }
 
