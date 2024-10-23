@@ -17,7 +17,7 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="398.0" prefWidth="589.0" style="-fx-background-color: #fff;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.miniproyecto2.controller.GameController">
    <center>
-      <GridPane hgap="1.0" prefHeight="314.0" prefWidth="393.0" style="-fx-background-color: #7a7d82; -fx-border-color: #109f7e; -fx-border-width: 2;" vgap="1.0" BorderPane.alignment="CENTER">
+      <GridPane fx:id="gridPane" hgap="1.0" prefHeight="314.0" prefWidth="393.0" style="-fx-background-color: #7a7d82; -fx-border-color: #109f7e; -fx-border-width: 2;" vgap="1.0" BorderPane.alignment="CENTER">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -43,7 +43,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </TextField>
-            <TextField alignment="CENTER" focusTraversable="false" prefHeight="55.0" prefWidth="65.0" text="3" GridPane.columnIndex="1">
+            <TextField alignment="CENTER" focusTraversable="false" prefHeight="55.0" prefWidth="65.0" GridPane.columnIndex="1" GridPane.rowIndex="0">
                <font>
                   <Font size="22.0" />
                </font>
@@ -51,7 +51,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </TextField>
-            <TextField alignment="CENTER" focusTraversable="false" prefHeight="55.0" prefWidth="65.0" GridPane.rowIndex="1">
+            <TextField alignment="CENTER" focusTraversable="false" prefHeight="55.0" prefWidth="65.0" GridPane.columnIndex="0" GridPane.rowIndex="1">
                <font>
                   <Font size="22.0" />
                </font>
@@ -62,7 +62,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </TextField>
-            <TextField alignment="CENTER" focusTraversable="false" prefHeight="55.0" prefWidth="65.0" text="4" GridPane.columnIndex="2">
+            <TextField alignment="CENTER" focusTraversable="false" prefHeight="55.0" prefWidth="65.0" GridPane.columnIndex="2" GridPane.rowIndex="0">
                <font>
                   <Font size="22.0" />
                </font>
@@ -86,7 +86,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </TextField>
-            <TextField alignment="CENTER" focusTraversable="false" prefHeight="55.0" prefWidth="65.0" GridPane.rowIndex="2">
+            <TextField alignment="CENTER" focusTraversable="false" prefHeight="55.0" prefWidth="65.0" GridPane.columnIndex="0" GridPane.rowIndex="2">
                <font>
                   <Font size="22.0" />
                </font>
@@ -97,7 +97,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </TextField>
-            <TextField alignment="CENTER" focusTraversable="false" prefHeight="55.0" prefWidth="65.0" GridPane.rowIndex="3">
+            <TextField alignment="CENTER" focusTraversable="false" prefHeight="55.0" prefWidth="65.0" GridPane.columnIndex="0" GridPane.rowIndex="3">
                <font>
                   <Font size="22.0" />
                </font>
@@ -125,17 +125,6 @@
                <font>
                   <Font size="22.0" />
                </font>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </TextField>
-            <TextField alignment="CENTER" focusTraversable="false" prefHeight="55.0" prefWidth="65.0" text="6" GridPane.columnIndex="3">
-               <font>
-                  <Font size="22.0" />
-               </font>
-               <GridPane.margin>
-                  <Insets left="2.0" />
-               </GridPane.margin>
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
@@ -184,7 +173,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </TextField>
-            <TextField alignment="CENTER" focusTraversable="false" prefHeight="55.0" prefWidth="65.0" text="4">
+            <TextField alignment="CENTER" focusTraversable="false" prefHeight="55.0" prefWidth="65.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
                <font>
                   <Font size="22.0" />
                </font>
@@ -192,7 +181,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </TextField>
-            <TextField alignment="CENTER" focusTraversable="false" prefHeight="55.0" prefWidth="65.0" GridPane.columnIndex="4">
+            <TextField alignment="CENTER" focusTraversable="false" prefHeight="55.0" prefWidth="65.0" GridPane.columnIndex="4" GridPane.rowIndex="0">
                <font>
                   <Font size="22.0" />
                </font>
@@ -200,7 +189,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </TextField>
-            <TextField alignment="CENTER" focusTraversable="false" prefHeight="55.0" prefWidth="65.0" GridPane.columnIndex="5">
+            <TextField alignment="CENTER" focusTraversable="false" prefHeight="55.0" prefWidth="65.0" GridPane.columnIndex="5" GridPane.rowIndex="0">
                <font>
                   <Font size="22.0" />
                </font>
@@ -273,7 +262,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </TextField>
-            <TextField alignment="CENTER" focusTraversable="false" prefHeight="55.0" prefWidth="65.0" GridPane.rowIndex="4">
+            <TextField alignment="CENTER" focusTraversable="false" prefHeight="55.0" prefWidth="65.0" GridPane.columnIndex="0" GridPane.rowIndex="4">
                <font>
                   <Font size="22.0" />
                </font>
@@ -339,7 +328,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </TextField>
-            <TextField alignment="CENTER" focusTraversable="false" prefHeight="55.0" prefWidth="65.0" GridPane.rowIndex="5">
+            <TextField alignment="CENTER" focusTraversable="false" prefHeight="55.0" prefWidth="65.0" GridPane.columnIndex="0" GridPane.rowIndex="5">
                <font>
                   <Font size="22.0" />
                </font>
@@ -389,6 +378,17 @@
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
+            </TextField>
+            <TextField alignment="CENTER" focusTraversable="false" prefHeight="55.0" prefWidth="65.0" GridPane.columnIndex="3" GridPane.rowIndex="0">
+               <font>
+                  <Font size="22.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <GridPane.margin>
+                  <Insets left="2.0" />
+               </GridPane.margin>
             </TextField>
          </children>
          <BorderPane.margin>
