@@ -15,6 +15,7 @@ import javafx.scene.layout.GridPane;
 public class GameController {
     private Chronometer chronometer;
     private Game game;
+    private Board board;
 
     // label que muestra la cantidad de pistas disponibles
     @FXML
@@ -35,6 +36,7 @@ public class GameController {
     public void initialize(){
         // Pasamos "this" como referencia de GameController
         this.game = new Game(this);
+        board = new Board();
         chronometer = new Chronometer(this);
         // Se proporciona al cronometro una referencia directa al objeto actual de la clase (GameController)
         // Así la clase cronometro puede acceder a los elementos de GameController.
@@ -47,7 +49,7 @@ public class GameController {
     public void startGame(){
 
         chronometer.start();
-        Board.fillMatriz();
+        board.fillMatriz();
         generateEvents();
         //fillTxtLabel();
         game.fillblocks();
@@ -70,6 +72,7 @@ public class GameController {
                     int finalRow = row;
                     int finalColumn = column;
                     txtField.setOnMouseClicked(event -> {
+                        game.paintSquares(finalRow, finalColumn);
                         System.out.println("Label at [" + finalRow + "," + finalColumn + "] clicked: " + txtField.getText());
                     });
 
@@ -90,8 +93,15 @@ public class GameController {
         }
     }
 
+    // Metodo que se ejecuta cuando se presione el boton de nuevo juego
     @FXML
-    public void handlePlay(ActionEvent event) {
+    public void newGame(ActionEvent event) {
+        game.cleanMatriz();
+        game.fillblocks();
+        chronometer.restart();
+        // Metodo que reinicie el contador
+        // Metodo que reinicie los errores
+        // Metodo que reinicie la puntuación
         System.out.println("PRESIONADO");
     }
 
@@ -117,6 +127,7 @@ public class GameController {
 
         // Mostrar el cuadro de diálogo en pantalla y esperar a que el usuario la cierre antes de continuar
         showMessageHowToPlay.showAndWait();
+
     }
 
     private int availableHints = 6; // Iniciamos con 6 pistas disponibles

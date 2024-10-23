@@ -3,9 +3,11 @@ package com.example.miniproyecto2.view;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class GameStage extends Stage {
     public GameStage() throws IOException {
@@ -14,6 +16,10 @@ public class GameStage extends Stage {
 
         Scene scene = new Scene(root);
         setScene(scene);
+        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/com/example/miniproyecto2/StyleCss/game.css")).toExternalForm());
+
+        // Agregar imagen
+        getIcons().add(new Image(String.valueOf(getClass().getResource("/com/example/miniproyecto2/images/favicon.png"))));
 
         setTitle("SUDOKU");
         setResizable(false);

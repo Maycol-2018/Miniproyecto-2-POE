@@ -433,7 +433,7 @@
                   <Insets left="10.0" />
                </VBox.margin>
             </GridPane>
-            <Button mnemonicParsing="false" onAction="#handlePlay" prefHeight="25.0" prefWidth="151.0" style="-fx-background-color: #00B68C;" text="NUEVA PARTIDA" textFill="WHITE">
+            <Button mnemonicParsing="false" onAction="#newGame" prefHeight="25.0" prefWidth="151.0" style="-fx-background-color: #00B68C;" text="NUEVA PARTIDA" textFill="WHITE">
                <VBox.margin>
                   <Insets top="20.0" />
                </VBox.margin>
