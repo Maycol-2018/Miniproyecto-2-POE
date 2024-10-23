@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Game {
+public class Game implements IGame{
     private List<List<Integer>>  matriz;
     private Random random = new Random();
     private GridPane gridPane;
@@ -243,16 +243,6 @@ public class Game {
         int count =0;
         int f =0;
         int c =0;
-//        if(lastEditableBoxes != -1){
-//            // Se recorren los 6 recuadros, y en cada uno sus 2 casillas se habilitan para ser editadas
-//            for(int i= 0; i<6; i++){
-//                f = boxesMatriz[count][0];
-//                c = boxesMatriz[count][1];
-//                TextField txtField = (TextField) getNodeByRowColumnIndex(f, c, gridPane);
-//                txtField.setEditable(true);
-//                count++;
-//            }
-//        }
 
         if(lastEditableBoxes != -1) {
             // Se recorren los 6 recuadros, y en cada uno sus 2 casillas se habilitan para ser editadas
@@ -261,18 +251,9 @@ public class Game {
                 c = boxesMatriz[count][1];
                 TextField txtField = (TextField) getNodeByRowColumnIndex(f, c, gridPane);
                 txtField.setEditable(true);
-
-                //System.out.println( f + " " +c);
                 count++;
             }
         }
-//        for(int i=0; i<12; i++){
-//            for(int j=0; j<2; j++){
-//                System.out.print(boxesMatriz[i][j] + " ");
-//            }
-//            System.out.println();
-//        }
-
     }
 
     public Node getNodeByRowColumnIndex(final int row, final int column, GridPane gridPane) {
