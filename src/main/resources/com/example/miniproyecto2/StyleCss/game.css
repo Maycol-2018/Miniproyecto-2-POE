@@ -1,3 +1,6 @@
 .squaresBackground{
-    -fx-background-color: #88c388;
+    -fx-background-color:#CEF6F5;
+}
+.currentBoxBackground{
+    -fx-background-color: #58FAF4;
 }
