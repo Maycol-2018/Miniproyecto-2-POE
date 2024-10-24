@@ -29,13 +29,16 @@ public class GameController {
     // boton  que el usuario presiona para solicitar ayuda en una pista
     @FXML
     private Button hintButton;
-
+    @FXML
+    private Label scoreLabel;
     @FXML
     private Label labelTime;
     @FXML
     private Label errorCountLabel; // Label para mostrar el contador de errores
     private int errorCount = 0; // Contador de errores
     private final int MAX_ERRORS = 6; // Máximo de errores permitidos
+    private int score = 0;
+    private boolean firstGame = false;
 
     @FXML
     private GridPane gridPane;
@@ -67,6 +70,7 @@ public class GameController {
         chronometer.start();
         board.fillMatriz();
         generateEvents();
+        resetScore();
         //fillTxtLabel();
         game.fillblocks();
     }
@@ -133,6 +137,8 @@ public class GameController {
         game.cleanMatriz();
         game.fillblocks();
         chronometer.restart();
+        resetErrorCounter();
+        resetScore();
         // Metodo que reinicie el contador
         // Metodo que reinicie los errores
         // Metodo que reinicie la puntuación
@@ -286,6 +292,30 @@ public class GameController {
                 showGameOverAlert();
             }
         }
+        else{
+            if(firstGame){
+                score += 5;
+                scoreLabel.setText(String.valueOf(score));
+            }
+            else{
+                firstGame = true;
+                score -= 60;
+                score += 5;
+                scoreLabel.setText(String.valueOf(score));
+            }
+        }
+    }
+
+    // reiniciar contador de errores
+    private void resetErrorCounter(){
+        errorCount = 0;
+        errorCountLabel.setText(String.valueOf(errorCount));
+    }
+
+    // Reiniciar contador de puntuatción
+    private void resetScore(){
+        score =0;
+        scoreLabel.setText(String.valueOf(score));
     }
 
     // Metodo para resaltar una celda con error
@@ -314,6 +344,12 @@ public class GameController {
                 }
             }
         }
+    }
+
+    @FXML
+    private void showSolution(ActionEvent event) {
+        System.out.println("solucionado");
+
     }
 
     /* SISTEMA DE GAME OVER  */
