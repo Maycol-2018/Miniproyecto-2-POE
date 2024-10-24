@@ -31,6 +31,11 @@ public class Game implements IGame{
         gridPane = gameController.getGridPane();
     }
 
+    // Metodo para obtener el valor correcto de la matriz
+    public int getMatrizValue(int row, int col) {
+        return matriz.get(row).get(col);
+    }
+
 
 
     // Metodo que puede revelar toda la matriz, puede servir cuando el usuario haya perdido y se muestre la
