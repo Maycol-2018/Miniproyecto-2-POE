@@ -117,6 +117,22 @@ public class Game implements IGame{
         }
     }
 
+    public void makeEditableCellsEditable() {
+        for (int row = 0; row < 6; row++) {
+            for (int col = 0; col < 6; col++) {
+                TextField txtField = (TextField) getNodeByRowColumnIndex(row, col, gridPane);
+                if (txtField != null) {
+                    // Verificamos si el campo de texto no contiene un número por defecto
+                    if (txtField.getText().isEmpty() || txtField.getStyleClass().contains("default-cell")) {
+                        txtField.setEditable(true); // Solo hacer editable si está vacío o es por defecto
+                    } else {
+                        txtField.setEditable(false); // Si ya tiene un número, no debe ser editable
+                    }
+                }
+            }
+        }
+    }
+
     // Metodo coloca un color de fondo a los labels, del bloque y de filas y columnas en donde se presiono.
     public void paintSquares(int row, int column){
         // Primero, limpia la celda previamente seleccionada
@@ -233,7 +249,7 @@ public class Game implements IGame{
         else return 3;
     }
 
-    // Metedo que desabilida la edición sobre las casillas por defecto
+    // Metedo que deshabilita la edición sobre las casillas por defecto
     public void editableBoxesFalse(int row1, int column1, int row2, int column2){
         TextField txtField = (TextField) getNodeByRowColumnIndex(row1, column1, gridPane);
         txtField.setEditable(false);

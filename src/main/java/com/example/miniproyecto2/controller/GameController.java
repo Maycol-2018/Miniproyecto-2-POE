@@ -1,10 +1,10 @@
 package com.example.miniproyecto2.controller;
+import com.example.miniproyecto2.model.SudokuClearAdapter;
 
 import com.example.miniproyecto2.model.Board;
 import com.example.miniproyecto2.model.Chronometer;
 import com.example.miniproyecto2.model.Game;
 import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -16,6 +16,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
+
 
 
 public class GameController {
@@ -33,6 +34,7 @@ public class GameController {
     private Label scoreLabel;
     @FXML
     private Label labelTime;
+
     @FXML
     private Label errorCountLabel; // Label para mostrar el contador de errores
     private int errorCount = 0; // Contador de errores
@@ -45,6 +47,11 @@ public class GameController {
     private TextField selectedTextField; // Variable para guardar el TextField seleccionado
     private int selectedRow = -1; // Almacena la fila del TextField seleccionado
     private int selectedColumn = -1; // Almacena la columna del TextField seleccionado
+
+    @FXML
+    private Button clearButton;
+
+    private SudokuClearAdapter clearAdapter;
 
     public GameController() {}
 
@@ -60,6 +67,8 @@ public class GameController {
 
         // Inicializar el contador de errores
         initializeErrorCounter();
+
+        clearAdapter = new SudokuClearAdapter(game, gridPane);
 
         System.out.println("Game controller inicializado");
         hintsLabel.setVisible(false); // El label está oculto inicialmente
@@ -134,11 +143,14 @@ public class GameController {
     // Metodo que se ejecuta cuando se presione el boton de nuevo juego
     @FXML
     public void newGame(ActionEvent event) {
+        clearAdapter.clearSudokuBoard(); // Limpiar el tablero antes de iniciar un nuevo juego
         game.cleanMatriz();
         game.fillblocks();
+        game.makeEditableCellsEditable(); // Hacer editables solo las celdas que no son por defecto
         chronometer.restart();
         resetErrorCounter();
         resetScore();
+
         // Metodo que reinicie el contador
         // Metodo que reinicie los errores
         // Metodo que reinicie la puntuación
@@ -393,5 +405,10 @@ public class GameController {
         gameOverAlert.showAndWait();
 
         // Opcional: Aquí se puede  agregar código para reiniciar el juego
+    }
+
+    @FXML
+    public void onHandleclearSudokuBoard(ActionEvent event) {
+        clearAdapter.clearSudokuBoard(); // Llama al metodo del adaptador para limpiar el tablero
     }
 }

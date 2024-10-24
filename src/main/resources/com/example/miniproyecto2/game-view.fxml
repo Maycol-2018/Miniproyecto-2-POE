@@ -486,7 +486,7 @@
                         <Insets left="12.0" />
                      </GridPane.margin>
                   </Label>
-                  <Button mnemonicParsing="false" prefHeight="44.0" prefWidth="78.0" style="-fx-background-color: #fff;" textAlignment="CENTER" GridPane.halignment="CENTER">
+                  <Button fx:id="clearButton" mnemonicParsing="false" onAction="#onHandleclearSudokuBoard" prefHeight="44.0" prefWidth="78.0" style="-fx-background-color: #fff;" textAlignment="CENTER" GridPane.halignment="CENTER">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
