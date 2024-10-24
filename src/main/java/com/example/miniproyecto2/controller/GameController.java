@@ -346,10 +346,10 @@ public class GameController {
         }
     }
 
+    // Metodo que revela la solución del sudoku
     @FXML
     private void showSolution(ActionEvent event) {
-        System.out.println("solucionado");
-
+        game.showSolutionSudoku();
     }
 
     /* SISTEMA DE GAME OVER  */
