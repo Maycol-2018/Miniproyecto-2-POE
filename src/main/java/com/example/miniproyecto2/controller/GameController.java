@@ -64,7 +64,6 @@ public class GameController {
     }
 
     public void startGame(){
-
         chronometer.start();
         board.fillMatriz();
         generateEvents();
@@ -294,8 +293,8 @@ public class GameController {
         if (cell != null) {
             // Combina el fondo suave con un borde rojo
             cell.setStyle(
-                    "-fx-background-color: rgba(255, 102, 102, 0.8);" +  // Fondo rojo suave
-                            "-fx-border-color: #FF0000;"                        // Color del borde rojo
+                    "-fx-background-color: rgba(246, 156, 246, 0.8);" +  // Fondo rojo suave
+                            "-fx-border-color: #ed5d5d;"                        // Color del borde rojo
             );
         }
     }

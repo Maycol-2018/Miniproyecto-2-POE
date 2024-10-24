@@ -54,16 +54,15 @@ public class Game implements IGame{
 //    }
 
     public void cleanMatriz(){
-        int digit;
         matriz = Board.getMatriz();
         for (int row = 0; row < 6; row++) {
             for (int column = 0; column < 6; column++) {
                 // Se obtiene el textfield del GridPane. Correspondiente a la fila y columna actual
                 TextField txtField = (TextField) getNodeByRowColumnIndex(row, column, gridPane);
-                digit = 0;
-                txtField.setText(digit + "");
+                txtField.setText("");
             }
         }
+        System.out.println("Metodo limpiar matriz activado");
     }
 
     // Llena cada bloque de la matriz con 2 numeros de forma aletatoria.
@@ -270,8 +269,4 @@ public class Game implements IGame{
         }
         return null;
     }
-
-
-
-
 }
