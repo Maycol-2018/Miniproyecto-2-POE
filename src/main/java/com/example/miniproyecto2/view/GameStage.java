@@ -22,6 +22,7 @@ public class GameStage extends Stage {
         getIcons().add(new Image(String.valueOf(getClass().getResource("/com/example/miniproyecto2/images/favicon.png"))));
 
         setTitle("SUDOKU");
+        // Disables window resizing.
         setResizable(false);
 
         show();
@@ -30,13 +31,21 @@ public class GameStage extends Stage {
     private static class GameStageHolder{
         private static GameStage INSTANCE;
     }
-
+    /**
+     * Static method to get the singleton instance of GameStage.
+     * If the instance is not yet created, it will instantiate a new GameStage.
+     *
+     * @return the singleton instance of GameStage.
+     * @throws IOException if there is an issue loading resources.
+     */
     public static GameStage getInstance() throws IOException{
         GameStageHolder.INSTANCE = GameStageHolder.INSTANCE != null?
                 GameStageHolder.INSTANCE : new GameStage();
         return GameStageHolder.INSTANCE;
     }
-
+    /**
+     * Static method to delete the singleton instance of GameStage by closing its resources.
+     */
     public static void deletedInstance(){
         GameStageHolder.INSTANCE.close();
         GameStageHolder.INSTANCE = null;
