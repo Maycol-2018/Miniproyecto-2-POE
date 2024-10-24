@@ -21,4 +21,5 @@ public interface IGame {
     void editableBoxesFalse(int row1, int column1, int row2, int column2);
     void editableBoxesTrue();
     Node getNodeByRowColumnIndex(final int row, final int column, GridPane gridPane);
+    void showSolutionSudoku();
 }

@@ -38,20 +38,20 @@ public class Game implements IGame{
 
 
 
-    // Metodo que puede revelar toda la matriz, puede servir cuando el usuario haya perdido y se muestre la
-    // solución
-//    public void cleanMatriz(){
-//        int digit;
-//        matriz = Board.getMatriz();
-//        for (int row = 0; row < 6; row++) {
-//            for (int column = 0; column < 6; column++) {
-//                // Se obtiene el textfield del GridPane. Correspondiente a la fila y columna actual
-//                TextField txtField = (TextField) getNodeByRowColumnIndex(row, column, gridPane);
-//                digit = matriz.get(row).get(column);
-//                txtField.setText(digit + "");
-//            }
-//        }
-//    }
+     //Metodo que puede revelar toda la matriz, puede servir cuando el usuario haya perdido y se muestre la
+     //solución
+    public void showSolutionSudoku(){
+        int digit;
+        matriz = Board.getMatriz();
+        for (int row = 0; row < 6; row++) {
+            for (int column = 0; column < 6; column++) {
+                // Se obtiene el textfield del GridPane. Correspondiente a la fila y columna actual
+                TextField txtField = (TextField) getNodeByRowColumnIndex(row, column, gridPane);
+                digit = matriz.get(row).get(column);
+                txtField.setText(digit + "");
+            }
+        }
+    }
 
     public void cleanMatriz(){
         matriz = Board.getMatriz();
