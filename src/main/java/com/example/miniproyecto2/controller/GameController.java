@@ -340,11 +340,6 @@ public class GameController {
             );
         }
     }
-    // Metodo para resaltar una celda con error usando coordenadas
-    private void highlightError(int row, int column) {
-        TextField cell = (TextField) game.getNodeByRowColumnIndex(row, column, gridPane);
-        highlightError(cell);
-    }
 
     // Metodo para limpiar todos los resaltados
     private void clearHighlights() {
